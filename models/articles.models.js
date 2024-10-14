@@ -12,7 +12,4 @@ exports.selectArticleById = (article_id) => {
             }
             return result.rows[0];
         });
-    // .catch((err) => {
-    //     console.log(err);
-    // });
 };

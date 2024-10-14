@@ -20,6 +20,16 @@ app.use((err, request, response, next) => {
     if (err.status && err.msg) {
         response.status(err.status).send({ msg: err.msg });
     }
+    next(err);
+});
+
+app.use((err, request, response, next) => {
+    if (err.code === "22P02") {
+        response
+            .status(400)
+            .send({ msg: "ERROR: bad request - invalid input" });
+    }
+    next(err);
 });
 
 app.use((err, request, response, next) => {

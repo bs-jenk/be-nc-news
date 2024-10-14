@@ -78,5 +78,15 @@ describe("API endpoints", () => {
                     );
                 });
         });
+        test("400 - sends an appropriate error message to the client when given an invalid id", () => {
+            return request(app)
+                .get("/api/articles/not-an-article-id")
+                .expect(400)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: bad request - invalid input"
+                    );
+                });
+        });
     });
 });
