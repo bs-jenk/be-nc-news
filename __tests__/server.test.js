@@ -49,4 +49,20 @@ describe("API endpoints", () => {
                 });
         });
     });
+    describe("GET: /api/articles/:article_id", () => {
+        test("200 - sends a single article to the client", () => {
+            return request(app)
+                .get("/api/articles/1")
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.article).toMatchObject({
+                        title: "Living in the shadow of a great man",
+                        topic: "mitch",
+                        author: "butter_bridge",
+                        body: "I find this existence challenging",
+                        votes: 100,
+                    });
+                });
+        });
+    });
 });
