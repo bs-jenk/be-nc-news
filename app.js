@@ -17,6 +17,12 @@ app.all("*", (request, response, next) => {
 });
 
 app.use((err, request, response, next) => {
+    if (err.status && err.msg) {
+        response.status(err.status).send({ msg: err.msg });
+    }
+});
+
+app.use((err, request, response, next) => {
     response.status(500).send({ msg: "ERROR: internal server error" });
 });
 

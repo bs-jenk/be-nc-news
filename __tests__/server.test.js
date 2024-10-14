@@ -68,5 +68,15 @@ describe("API endpoints", () => {
                     expect(response.body.article).toHaveProperty("created_at");
                 });
         });
+        test("404 - sends an appropriate error message to the client when given a valid but non-existent id", () => {
+            return request(app)
+                .get("/api/articles/976")
+                .expect(404)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: article does not exist"
+                    );
+                });
+        });
     });
 });
