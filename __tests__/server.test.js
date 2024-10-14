@@ -13,7 +13,17 @@ beforeEach(() => seed({ articleData, commentData, topicData, userData }));
 afterAll(() => db.end());
 
 describe("API endpoints", () => {
-    describe("", () => {
-        it("", () => {});
+    describe("GET: /api/topics ", () => {
+        test("200 - sends an array of topics to the client", () => {
+            return request(app)
+                .get("/api/topics")
+                .expect(200)
+                .then((response) => {
+                    response.body.topics.forEach((topic) => {
+                        expect(typeof topic.slug).toBe("string");
+                        expect(typeof topic.description).toBe("string");
+                    });
+                });
+        });
     });
 });
