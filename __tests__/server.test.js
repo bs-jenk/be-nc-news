@@ -8,6 +8,7 @@ const {
     userData,
 } = require("../db/data/test-data");
 const seed = require("../db/seeds/seed");
+const endpoints = require("../endpoints.json");
 
 beforeEach(() => seed({ articleData, commentData, topicData, userData }));
 afterAll(() => db.end());
@@ -24,15 +25,26 @@ describe("* ALL incorrect endpoints", () => {
 });
 
 describe("API endpoints", () => {
+    describe("GET: /api", () => {
+        test("200 - sends an object which documents all the available endpoints the client can use", () => {
+            return request(app)
+                .get("/api")
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.endpoints).toEqual(endpoints);
+                });
+        });
+    });
     describe("GET: /api/topics ", () => {
         test("200 - sends an array of topics to the client", () => {
             return request(app)
                 .get("/api/topics")
                 .expect(200)
                 .then((response) => {
+                    expect(response.body.topics.length).toBe(3);
                     response.body.topics.forEach((topic) => {
-                        expect(typeof topic.slug).toBe("string");
-                        expect(typeof topic.description).toBe("string");
+                        expect(topic).toHaveProperty("slug");
+                        expect(topic).toHaveProperty("description");
                     });
                 });
         });
