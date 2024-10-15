@@ -109,5 +109,15 @@ describe("API endpoints", () => {
                     });
                 });
         });
+        test("200 - sorts the data by date in descending order", () => {
+            return request(app)
+                .get("/api/articles")
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.articles).toBeSortedBy("created_at", {
+                        descending: true,
+                    });
+                });
+        });
     });
 });
