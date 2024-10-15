@@ -120,4 +120,21 @@ describe("API endpoints", () => {
                 });
         });
     });
+    describe("GET: /api/articles/:article_id/comments", () => {
+        test("200 - sends an array of comments for the selected article to the client", () => {
+            return request(app)
+                .get("/api/articles/3/comments")
+                .expect((response) => {
+                    expect(response.body.comments.length).toBe(2);
+                    response.body.comments.forEach((comment) => {
+                        expect(comment).toHaveProperty("comment_id");
+                        expect(comment).toHaveProperty("votes");
+                        expect(comment).toHaveProperty("created_at");
+                        expect(comment).toHaveProperty("author");
+                        expect(comment).toHaveProperty("body");
+                        expect(comment).toHaveProperty("article_id");
+                    });
+                });
+        });
+    });
 });
