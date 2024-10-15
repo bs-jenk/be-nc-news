@@ -136,9 +136,18 @@ describe("API endpoints", () => {
                 .expect((response) => {
                     expect(response.body.comments.length).toBe(2);
                     response.body.comments.forEach((comment) => {
-                        expect(comment).toHaveProperty("comment_id");
-                        expect(comment).toHaveProperty("votes");
-                        expect(comment).toHaveProperty("created_at");
+                        expect(comment).toHaveProperty(
+                            "comment_id",
+                            expect.any(Number)
+                        );
+                        expect(comment).toHaveProperty(
+                            "votes",
+                            expect.any(Number)
+                        );
+                        expect(comment).toHaveProperty(
+                            "created_at",
+                            expect.any(String)
+                        );
                         expect(comment).toHaveProperty("author");
                         expect(comment).toHaveProperty("body");
                         expect(comment).toHaveProperty("article_id");
