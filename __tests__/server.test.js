@@ -154,5 +154,15 @@ describe("API endpoints", () => {
                     });
                 });
         });
+        test("400 - sends an appropriate error message to the client when given an invalid article id", () => {
+            return request(app)
+                .get("/api/articles/invalid-id/comments")
+                .expect(400)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: bad request - invalid input"
+                    );
+                });
+        });
     });
 });
