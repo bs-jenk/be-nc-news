@@ -175,5 +175,14 @@ describe("API endpoints", () => {
                     );
                 });
         });
+        test("200 - sends an empty array to the client when given an article id that exists but has no comments", () => {
+            return request(app)
+                .get("/api/articles/7/comments")
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.comments).toBeArray();
+                    expect(response.body.comments).toHaveLength(0);
+                });
+        });
     });
 });
