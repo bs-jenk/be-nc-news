@@ -15,12 +15,23 @@
         "exampleResponse": {
             "articles": [
                 {
+                    "article_id": 14,
+                    "title": "The Notorious MSG’s Unlikely Formula For Success",
+                    "topic": "cooking",
+                    "author": "grumpy19",
+                    "created_at": "2020-03-19 00:14:00",
+                    "votes": 0,
+                    "article_img_url": "https://images.pexels.com/photos/2403392/pexels-photo-2403392.jpeg?w=700&h=700",
+                    "comment_count": 2
+                },
+                {
+                    "article_id": 13,
                     "title": "Seafood substitutions are increasing",
                     "topic": "cooking",
                     "author": "weegembump",
-                    "body": "Text from the article..",
                     "created_at": "2018-05-30T15:59:13.341Z",
                     "votes": 0,
+                    "article_img_url": "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?w=700&h=700",
                     "comment_count": 6
                 }
             ]
@@ -31,13 +42,13 @@
         "exampleResponse": {
             "article": {
                 "article_id": 1,
-                "title": "Living in the shadow of a great man",
-                "topic": "mitch",
-                "author": "butter_bridge",
-                "body": "I find this existence challenging",
-                "created_at": 1594329060000,
-                "votes": 100,
-                "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
+                "title": "Running a Node App",
+                "topic": "coding",
+                "author": "jessjelly",
+                "body": "This is part two of a series on how to get up and running with Systemd and Node.js. This part dives deeper into how to successfully run your app with systemd long-term, and how to set it up in a production environment.",
+                "created_at": "2020-11-07 06:03:00",
+                "votes": 0,
+                "article_img_url": "https://images.pexels.com/photos/11035380/pexels-photo-11035380.jpeg?w=700&h=700"
             }
         }
     }
