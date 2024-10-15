@@ -57,6 +57,7 @@
         "exampleResponse": {
             "comments": [
                 {
+                    "comment_id": 1,
                     "body": "Itaque quisquam est similique et est perspiciatis reprehenderit voluptatem autem. Voluptatem accusantium eius error adipisci quibusdam doloribus.",
                     "votes": -1,
                     "author": "tickle122",
@@ -64,6 +65,7 @@
                     "created_at": "2020-06-20 08:24:00"
                 },
                 {
+                    "comment_id": 2,
                     "body": "Nobis consequatur animi. Ullam nobis quaerat voluptates veniam.",
                     "votes": 7,
                     "author": "grumpy19",
