@@ -36,7 +36,7 @@ describe("API endpoints", () => {
         });
     });
     describe("GET: /api/topics ", () => {
-        test("200 - sends an array of topics to the client", () => {
+        test("200 - sends an array of all the topics to the client", () => {
             return request(app)
                 .get("/api/topics")
                 .expect(200)
@@ -86,6 +86,27 @@ describe("API endpoints", () => {
                     expect(response.body.msg).toBe(
                         "ERROR: bad request - invalid input"
                     );
+                });
+        });
+    });
+    describe("GET: /api/articles", () => {
+        test("200 - sends an array of all the articles to the client", () => {
+            return request(app)
+                .get("/api/articles")
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.articles.length).toBe(13);
+                    response.body.articles.forEach((article) => {
+                        expect(article).toHaveProperty("author");
+                        expect(article).toHaveProperty("title");
+                        expect(article).toHaveProperty("article_id");
+                        expect(article).toHaveProperty("topic");
+                        expect(article).toHaveProperty("created_at");
+                        expect(article).toHaveProperty("votes");
+                        expect(article).toHaveProperty("article_img_url");
+                        expect(article).toHaveProperty("comment_count");
+                        expect(article).not.toHaveProperty("body");
+                    });
                 });
         });
     });
