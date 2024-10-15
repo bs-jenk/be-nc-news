@@ -97,9 +97,18 @@ describe("API endpoints", () => {
                 .then((response) => {
                     expect(response.body.articles.length).toBe(13);
                     response.body.articles.forEach((article) => {
-                        expect(article).toHaveProperty("author");
-                        expect(article).toHaveProperty("title");
-                        expect(article).toHaveProperty("article_id");
+                        expect(article).toHaveProperty(
+                            "author",
+                            expect.any(String)
+                        );
+                        expect(article).toHaveProperty(
+                            "title",
+                            expect.any(String)
+                        );
+                        expect(article).toHaveProperty(
+                            "article_id",
+                            expect.any(Number)
+                        );
                         expect(article).toHaveProperty("topic");
                         expect(article).toHaveProperty("created_at");
                         expect(article).toHaveProperty("votes");
@@ -117,6 +126,62 @@ describe("API endpoints", () => {
                     expect(response.body.articles).toBeSortedBy("created_at", {
                         descending: true,
                     });
+                });
+        });
+    });
+    describe("GET: /api/articles/:article_id/comments", () => {
+        test("200 - sends an array of comments for the selected article to the client", () => {
+            return request(app)
+                .get("/api/articles/3/comments")
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.comments.length).toBe(2);
+                    response.body.comments.forEach((comment) => {
+                        expect(comment).toHaveProperty(
+                            "comment_id",
+                            expect.any(Number)
+                        );
+                        expect(comment).toHaveProperty(
+                            "votes",
+                            expect.any(Number)
+                        );
+                        expect(comment).toHaveProperty(
+                            "created_at",
+                            expect.any(String)
+                        );
+                        expect(comment).toHaveProperty("author");
+                        expect(comment).toHaveProperty("body");
+                        expect(comment).toHaveProperty("article_id");
+                    });
+                });
+        });
+        test("400 - sends an appropriate error message to the client when given an invalid article id", () => {
+            return request(app)
+                .get("/api/articles/invalid-id/comments")
+                .expect(400)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: bad request - invalid input"
+                    );
+                });
+        });
+        test("404 - sends an appropriate error message to the client when given an id that is valid but does not exist", () => {
+            return request(app)
+                .get("/api/articles/423/comments")
+                .expect(404)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: article does not exist"
+                    );
+                });
+        });
+        test("200 - sends an empty array to the client when given an article id that exists but has no comments", () => {
+            return request(app)
+                .get("/api/articles/7/comments")
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.comments).toBeArray();
+                    expect(response.body.comments).toHaveLength(0);
                 });
         });
     });
