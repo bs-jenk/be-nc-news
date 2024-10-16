@@ -37,7 +37,6 @@ exports.updateArticleById = (article_id, update) => {
             [update.inc_votes, article_id]
         )
         .then((result) => {
-            console.log(result.rows[0]);
             return result.rows[0];
         });
 };

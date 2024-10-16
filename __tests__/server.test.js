@@ -385,5 +385,17 @@ describe("API endpoints", () => {
                     );
                 });
         });
+        test("400 - sends an appropriate error message when the client tries to update an article using an invalid article id", () => {
+            const update = { inc_votes: 1 };
+            return request(app)
+                .patch("/api/articles/invalid-id")
+                .send(update)
+                .expect(400)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: bad request - invalid input"
+                    );
+                });
+        });
     });
 });
