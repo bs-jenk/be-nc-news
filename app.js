@@ -47,6 +47,12 @@ app.use((err, request, response, next) => {
 });
 
 app.use((err, request, response, next) => {
+    if (err.code === "23503") {
+        response.status(404).send({ msg: "ERROR: article does not exist" });
+    }
+});
+
+app.use((err, request, response, next) => {
     response.status(500).send({ msg: "ERROR: internal server error" });
 });
 

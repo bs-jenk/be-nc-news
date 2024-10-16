@@ -236,7 +236,7 @@ describe("API endpoints", () => {
                     );
                 });
         });
-        test("200 - inserts the new comment and sends it back to the client when unnecessary properties are provided along with an informative message", () => {
+        test("200 - inserts the new comment and sends it back to the client along with an informative message when unnecessary properties are provided", () => {
             const newComment = {
                 username: "icellusedkars",
                 body: "I like loud typing.",
@@ -263,6 +263,21 @@ describe("API endpoints", () => {
                     expect(response.body.newComment).toHaveProperty(
                         "created_at",
                         expect.any(String)
+                    );
+                });
+        });
+        test.only("404 - sends an appropriate error message when the client tries to post a comment using an article id that does not exist", () => {
+            const newComment = {
+                username: "butter_bridge",
+                body: "I love this article.",
+            };
+            return request(app)
+                .post("/api/articles/235/comments")
+                .send(newComment)
+                .expect(404)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: article does not exist"
                     );
                 });
         });
