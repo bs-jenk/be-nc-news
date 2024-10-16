@@ -352,5 +352,38 @@ describe("API endpoints", () => {
                     );
                 });
         });
+        test("200 - updates the votes property and sends the updated article back along with an informative message when unnecessary properties are provided", () => {
+            const update = { inc_votes: 4, extra_property: "example" };
+            return request(app)
+                .patch("/api/articles/5")
+                .send(update)
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "NOTE: 1 or more unnecessary properties were passed in your request"
+                    );
+                    expect(response.body.updatedArticle.votes).toBe(4);
+                    expect(response.body.updatedArticle.article_id).toBe(5);
+                    expect(response.body.updatedArticle.title).toBe(
+                        "UNCOVERED: catspiracy to bring down democracy"
+                    );
+                    expect(response.body.updatedArticle.author).toBe(
+                        "rogersop"
+                    );
+                    expect(response.body.updatedArticle.topic).toBe("cats");
+                    expect(response.body.updatedArticle).toHaveProperty(
+                        "body",
+                        expect.any(String)
+                    );
+                    expect(response.body.updatedArticle).toHaveProperty(
+                        "article_img_url",
+                        expect.any(String)
+                    );
+                    expect(response.body.updatedArticle).toHaveProperty(
+                        "created_at",
+                        expect.any(String)
+                    );
+                });
+        });
     });
 });

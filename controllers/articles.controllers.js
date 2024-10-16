@@ -25,6 +25,12 @@ exports.patchArticleById = (request, response, next) => {
     const article_id = request.params.article_id;
     const update = request.body;
     updateArticleById(article_id, update).then((updatedArticle) => {
-        response.status(200).send({ updatedArticle });
+        if (Object.keys(update).length > 1) {
+            const msg =
+                "NOTE: 1 or more unnecessary properties were passed in your request";
+            response.status(200).send({ msg, updatedArticle });
+        } else {
+            response.status(200).send({ updatedArticle });
+        }
     });
 };
