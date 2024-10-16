@@ -26,3 +26,23 @@ exports.selectArticleById = (article_id) => {
             return result.rows[0];
         });
 };
+
+exports.updateArticleById = (article_id, update) => {
+    return db
+        .query(
+            `UPDATE articles
+            SET votes = $1
+            WHERE article_id = $2
+            RETURNING *;`,
+            [update.inc_votes, article_id]
+        )
+        .then((result) => {
+            if (!result.rowCount) {
+                return Promise.reject({
+                    status: 404,
+                    msg: "ERROR: article does not exist",
+                });
+            }
+            return result.rows[0];
+        });
+};

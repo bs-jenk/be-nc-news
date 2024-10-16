@@ -266,6 +266,21 @@ describe("API endpoints", () => {
                     );
                 });
         });
+        test("400 - sends an appropriate error message when the client tries to post a comment using an invalid article id", () => {
+            const newComment = {
+                username: "icellusedkars",
+                body: "My favourite article!",
+            };
+            return request(app)
+                .post("/api/articles/invalid-id/comments")
+                .send(newComment)
+                .expect(400)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: bad request - invalid input"
+                    );
+                });
+        });
         test("404 - sends an appropriate error message when the client tries to post a comment using an article id that does not exist", () => {
             const newComment = {
                 username: "butter_bridge",
@@ -305,6 +320,116 @@ describe("API endpoints", () => {
                 .then((response) => {
                     expect(response.body.msg).toBe(
                         "ERROR: user does not exist"
+                    );
+                });
+        });
+    });
+    describe("PATCH: /api/articles/:article_id", () => {
+        test("200 - updates the votes property on an article and sends the updated article to the client", () => {
+            const update = { inc_votes: 1 };
+            return request(app)
+                .patch("/api/articles/3")
+                .send(update)
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.updatedArticle.votes).toBe(1);
+                    expect(response.body.updatedArticle.article_id).toBe(3);
+                    expect(response.body.updatedArticle.title).toBe(
+                        "Eight pug gifs that remind me of mitch"
+                    );
+                    expect(response.body.updatedArticle.author).toBe(
+                        "icellusedkars"
+                    );
+                    expect(response.body.updatedArticle.topic).toBe("mitch");
+                    expect(response.body.updatedArticle.body).toBe("some gifs");
+                    expect(response.body.updatedArticle).toHaveProperty(
+                        "article_img_url",
+                        expect.any(String)
+                    );
+                    expect(response.body.updatedArticle).toHaveProperty(
+                        "created_at",
+                        expect.any(String)
+                    );
+                });
+        });
+        test("200 - updates the votes property and sends the updated article back along with an informative message when unnecessary properties are provided", () => {
+            const update = { inc_votes: 4, extra_property: "example" };
+            return request(app)
+                .patch("/api/articles/5")
+                .send(update)
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "NOTE: 1 or more unnecessary properties were passed in your request"
+                    );
+                    expect(response.body.updatedArticle.votes).toBe(4);
+                    expect(response.body.updatedArticle.article_id).toBe(5);
+                    expect(response.body.updatedArticle.title).toBe(
+                        "UNCOVERED: catspiracy to bring down democracy"
+                    );
+                    expect(response.body.updatedArticle.author).toBe(
+                        "rogersop"
+                    );
+                    expect(response.body.updatedArticle.topic).toBe("cats");
+                    expect(response.body.updatedArticle).toHaveProperty(
+                        "body",
+                        expect.any(String)
+                    );
+                    expect(response.body.updatedArticle).toHaveProperty(
+                        "article_img_url",
+                        expect.any(String)
+                    );
+                    expect(response.body.updatedArticle).toHaveProperty(
+                        "created_at",
+                        expect.any(String)
+                    );
+                });
+        });
+        test("400 - sends an appropriate error message when the client tries to update an article using an invalid article id", () => {
+            const update = { inc_votes: 1 };
+            return request(app)
+                .patch("/api/articles/invalid-id")
+                .send(update)
+                .expect(400)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: bad request - invalid input"
+                    );
+                });
+        });
+        test("400 - sends an appropriate error message when the client tries to update an article using an article id that does not exist", () => {
+            const update = { inc_votes: 1 };
+            return request(app)
+                .patch("/api/articles/657")
+                .send(update)
+                .expect(404)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: article does not exist"
+                    );
+                });
+        });
+        test("400 - sends an appropriate error message when the client tries to update an article with a missing field in the request body", () => {
+            const update = {};
+            return request(app)
+                .patch("/api/articles/3")
+                .send(update)
+                .expect(400)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: bad request - missing input field(s)"
+                    );
+                });
+        });
+        test("400 - sends an appropriate error message when the client tries to update an article with invalid data in the required field", () => {
+            const update = { inc_votes: "seven" };
+            return request(app)
+                .patch("/api/articles/4")
+                .send(update)
+                .expect(400)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: bad request - invalid input"
                     );
                 });
         });
