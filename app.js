@@ -48,7 +48,11 @@ app.use((err, request, response, next) => {
 
 app.use((err, request, response, next) => {
     if (err.code === "23503") {
-        response.status(404).send({ msg: "ERROR: article does not exist" });
+        if (err.constraint.includes("article")) {
+            response.status(404).send({ msg: "ERROR: article does not exist" });
+        } else if (err.constraint.includes("author")) {
+            response.status(404).send({ msg: "ERROR: user does not exist" });
+        }
     }
     next(err);
 });

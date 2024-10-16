@@ -281,7 +281,7 @@ describe("API endpoints", () => {
                     );
                 });
         });
-        test("400 - sends an appropriate error message when the client tries to post a comment with missing fields", () => {
+        test("400 - sends an appropriate error message when the client tries to post a comment with missing input field(s)", () => {
             const newComment = {};
             return request(app)
                 .post("/api/articles/2/comments")
@@ -290,6 +290,21 @@ describe("API endpoints", () => {
                 .then((response) => {
                     expect(response.body.msg).toBe(
                         "ERROR: bad request - missing input field(s)"
+                    );
+                });
+        });
+        test("404 - sends an appropriate error message when the client tries to post a comment with a username that doesn't exist in the database", () => {
+            const newComment = {
+                username: "testUser123",
+                body: "I love this article.",
+            };
+            return request(app)
+                .post("/api/articles/6/comments")
+                .send(newComment)
+                .expect(404)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: user does not exist"
                     );
                 });
         });
