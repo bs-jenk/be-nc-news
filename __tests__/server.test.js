@@ -236,7 +236,7 @@ describe("API endpoints", () => {
                     );
                 });
         });
-        test("200 - inserts and returns a new comment to the client even when unnecessary properties are provided", () => {
+        test("200 - inserts the new comment and sends it back to the client when unnecessary properties are provided along with an informative message", () => {
             const newComment = {
                 username: "icellusedkars",
                 body: "I like loud typing.",
