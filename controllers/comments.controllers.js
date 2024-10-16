@@ -26,6 +26,12 @@ exports.postCommentsByArticleId = (request, response, next) => {
     const article_id = request.params.article_id;
     const comment = request.body;
     insertCommentsByArticleId(article_id, comment).then((newComment) => {
-        response.status(201).send({ newComment });
+        if (Object.keys(comment).length > 2) {
+            const msg =
+                "NOTE: 1 or more unnecessary properties were passed in your request";
+            response.status(201).send({ msg, newComment });
+        } else {
+            response.status(201).send({ newComment });
+        }
     });
 };

@@ -236,5 +236,35 @@ describe("API endpoints", () => {
                     );
                 });
         });
+        test("200 - inserts and returns a new comment to the client even when unnecessary properties are provided", () => {
+            const newComment = {
+                username: "icellusedkars",
+                body: "I like loud typing.",
+                favouriteColour: "green",
+            };
+            return request(app)
+                .post("/api/articles/4/comments")
+                .send(newComment)
+                .expect(201)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "NOTE: 1 or more unnecessary properties were passed in your request"
+                    );
+                    expect(response.body.newComment).toMatchObject({
+                        author: "icellusedkars",
+                        body: "I like loud typing.",
+                        article_id: 4,
+                        votes: 0,
+                    });
+                    expect(response.body.newComment).toHaveProperty(
+                        "comment_id",
+                        expect.any(Number)
+                    );
+                    expect(response.body.newComment).toHaveProperty(
+                        "created_at",
+                        expect.any(String)
+                    );
+                });
+        });
     });
 });
