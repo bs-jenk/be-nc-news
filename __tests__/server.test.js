@@ -266,6 +266,21 @@ describe("API endpoints", () => {
                     );
                 });
         });
+        test("400 - sends an appropriate error message when the client tries to post a comment using an invalid article id", () => {
+            const newComment = {
+                username: "icellusedkars",
+                body: "My favourite article!",
+            };
+            return request(app)
+                .post("/api/articles/invalid-id/comments")
+                .send(newComment)
+                .expect(400)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: bad request - invalid input"
+                    );
+                });
+        });
         test("404 - sends an appropriate error message when the client tries to post a comment using an article id that does not exist", () => {
             const newComment = {
                 username: "butter_bridge",
