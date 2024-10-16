@@ -409,5 +409,17 @@ describe("API endpoints", () => {
                     );
                 });
         });
+        test("400 - sends an appropriate error message when the client tries to update an article with a missing field in the request body", () => {
+            const update = {};
+            return request(app)
+                .patch("/api/articles/3")
+                .send(update)
+                .expect(400)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: bad request - missing input field(s)"
+                    );
+                });
+        });
     });
 });
