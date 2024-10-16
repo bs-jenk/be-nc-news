@@ -37,6 +37,12 @@ exports.updateArticleById = (article_id, update) => {
             [update.inc_votes, article_id]
         )
         .then((result) => {
+            if (!result.rowCount) {
+                return Promise.reject({
+                    status: 404,
+                    msg: "ERROR: article does not exist",
+                });
+            }
             return result.rows[0];
         });
 };

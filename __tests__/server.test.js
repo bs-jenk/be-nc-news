@@ -397,5 +397,17 @@ describe("API endpoints", () => {
                     );
                 });
         });
+        test("400 - sends an appropriate error message when the client tries to update an article using an article id that does not exist", () => {
+            const update = { inc_votes: 1 };
+            return request(app)
+                .patch("/api/articles/657")
+                .send(update)
+                .expect(404)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: article does not exist"
+                    );
+                });
+        });
     });
 });
