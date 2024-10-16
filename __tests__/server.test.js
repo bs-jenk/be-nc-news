@@ -324,4 +324,33 @@ describe("API endpoints", () => {
                 });
         });
     });
+    describe("PATCH: /api/articles/:article_id", () => {
+        test("200 - updates the votes property on an article and sends the updated article to the client", () => {
+            const update = { inc_votes: 1 };
+            return request(app)
+                .patch("/api/articles/3")
+                .send(update)
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.updatedArticle.votes).toBe(1);
+                    expect(response.body.updatedArticle.article_id).toBe(3);
+                    expect(response.body.updatedArticle.title).toBe(
+                        "Eight pug gifs that remind me of mitch"
+                    );
+                    expect(response.body.updatedArticle.author).toBe(
+                        "icellusedkars"
+                    );
+                    expect(response.body.updatedArticle.topic).toBe("mitch");
+                    expect(response.body.updatedArticle.body).toBe("some gifs");
+                    expect(response.body.updatedArticle).toHaveProperty(
+                        "article_img_url",
+                        expect.any(String)
+                    );
+                    expect(response.body.updatedArticle).toHaveProperty(
+                        "created_at",
+                        expect.any(String)
+                    );
+                });
+        });
+    });
 });

@@ -1,6 +1,7 @@
 const {
     selectArticles,
     selectArticleById,
+    updateArticleById,
 } = require("../models/articles.models");
 
 exports.getArticles = (request, response, next) => {
@@ -18,4 +19,12 @@ exports.getArticleById = (request, response, next) => {
         .catch((err) => {
             next(err);
         });
+};
+
+exports.patchArticleById = (request, response, next) => {
+    const article_id = request.params.article_id;
+    const update = request.body;
+    updateArticleById(article_id, update).then((updatedArticle) => {
+        response.status(200).send({ updatedArticle });
+    });
 };
