@@ -109,11 +109,26 @@ describe("API endpoints", () => {
                             "article_id",
                             expect.any(Number)
                         );
-                        expect(article).toHaveProperty("topic");
-                        expect(article).toHaveProperty("created_at");
-                        expect(article).toHaveProperty("votes");
-                        expect(article).toHaveProperty("article_img_url");
-                        expect(article).toHaveProperty("comment_count");
+                        expect(article).toHaveProperty(
+                            "topic",
+                            expect.any(String)
+                        );
+                        expect(article).toHaveProperty(
+                            "created_at",
+                            expect.any(String)
+                        );
+                        expect(article).toHaveProperty(
+                            "votes",
+                            expect.any(Number)
+                        );
+                        expect(article).toHaveProperty(
+                            "article_img_url",
+                            expect.any(String)
+                        );
+                        expect(article).toHaveProperty(
+                            "comment_count",
+                            expect.any(Number)
+                        );
                         expect(article).not.toHaveProperty("body");
                     });
                 });
@@ -149,9 +164,18 @@ describe("API endpoints", () => {
                             "created_at",
                             expect.any(String)
                         );
-                        expect(comment).toHaveProperty("author");
-                        expect(comment).toHaveProperty("body");
-                        expect(comment).toHaveProperty("article_id");
+                        expect(comment).toHaveProperty(
+                            "author",
+                            expect.any(String)
+                        );
+                        expect(comment).toHaveProperty(
+                            "body",
+                            expect.any(String)
+                        );
+                        expect(comment).toHaveProperty(
+                            "article_id",
+                            expect.any(Number)
+                        );
                     });
                 });
         });
@@ -186,7 +210,7 @@ describe("API endpoints", () => {
         });
     });
     describe("POST: /api/articles/:article_id/comments", () => {
-        test("200 - inserts an new comment associated with a given article id into the database and sends the new comment back to the client", () => {
+        test("200 - inserts a new comment associated with a given article id into the database and sends the new comment back to the client", () => {
             const newComment = {
                 username: "butter_bridge",
                 body: "Cats are dangerous.",
