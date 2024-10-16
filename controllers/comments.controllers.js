@@ -1,4 +1,7 @@
-const { selectCommentsByArticleId } = require("../models/comments.models");
+const {
+    selectCommentsByArticleId,
+    insertCommentsByArticleId,
+} = require("../models/comments.models");
 const { selectArticleById } = require("../models/articles.models");
 
 exports.getCommentsByArticleId = (request, response, next) => {
@@ -17,4 +20,12 @@ exports.getCommentsByArticleId = (request, response, next) => {
         .catch((err) => {
             next(err);
         });
+};
+
+exports.postCommentsByArticleId = (request, response, next) => {
+    const article_id = request.params.article_id;
+    const comment = request.body;
+    insertCommentsByArticleId(article_id, comment).then((newComment) => {
+        response.status(201).send({ newComment });
+    });
 };

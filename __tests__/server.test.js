@@ -185,4 +185,32 @@ describe("API endpoints", () => {
                 });
         });
     });
+    describe("POST: /api/articles/:article_id/comments", () => {
+        test("200 - inserts an new comment associated with a given article id into the database and sends the new comment back to the client", () => {
+            const newComment = {
+                username: "butter_bridge",
+                body: "Cats are dangerous.",
+            };
+            return request(app)
+                .post("/api/articles/5/comments")
+                .send(newComment)
+                .expect(201)
+                .then((response) => {
+                    expect(response.body.newComment).toMatchObject({
+                        author: "butter_bridge",
+                        body: "Cats are dangerous.",
+                        article_id: 5,
+                        votes: 0,
+                    });
+                    expect(response.body.newComment).toHaveProperty(
+                        "comment_id",
+                        expect.any(Number)
+                    );
+                    expect(response.body.newComment).toHaveProperty(
+                        "created_at",
+                        expect.any(String)
+                    );
+                });
+        });
+    });
 });
