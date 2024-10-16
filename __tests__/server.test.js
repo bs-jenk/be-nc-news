@@ -266,7 +266,7 @@ describe("API endpoints", () => {
                     );
                 });
         });
-        test.only("404 - sends an appropriate error message when the client tries to post a comment using an article id that does not exist", () => {
+        test("404 - sends an appropriate error message when the client tries to post a comment using an article id that does not exist", () => {
             const newComment = {
                 username: "butter_bridge",
                 body: "I love this article.",
@@ -278,6 +278,18 @@ describe("API endpoints", () => {
                 .then((response) => {
                     expect(response.body.msg).toBe(
                         "ERROR: article does not exist"
+                    );
+                });
+        });
+        test("400 - sends an appropriate error message when the client tries to post a comment with missing fields", () => {
+            const newComment = {};
+            return request(app)
+                .post("/api/articles/2/comments")
+                .send(newComment)
+                .expect(400)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: bad request - missing input field(s)"
                     );
                 });
         });
