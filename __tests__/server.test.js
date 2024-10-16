@@ -109,11 +109,26 @@ describe("API endpoints", () => {
                             "article_id",
                             expect.any(Number)
                         );
-                        expect(article).toHaveProperty("topic");
-                        expect(article).toHaveProperty("created_at");
-                        expect(article).toHaveProperty("votes");
-                        expect(article).toHaveProperty("article_img_url");
-                        expect(article).toHaveProperty("comment_count");
+                        expect(article).toHaveProperty(
+                            "topic",
+                            expect.any(String)
+                        );
+                        expect(article).toHaveProperty(
+                            "created_at",
+                            expect.any(String)
+                        );
+                        expect(article).toHaveProperty(
+                            "votes",
+                            expect.any(Number)
+                        );
+                        expect(article).toHaveProperty(
+                            "article_img_url",
+                            expect.any(String)
+                        );
+                        expect(article).toHaveProperty(
+                            "comment_count",
+                            expect.any(Number)
+                        );
                         expect(article).not.toHaveProperty("body");
                     });
                 });
@@ -149,9 +164,18 @@ describe("API endpoints", () => {
                             "created_at",
                             expect.any(String)
                         );
-                        expect(comment).toHaveProperty("author");
-                        expect(comment).toHaveProperty("body");
-                        expect(comment).toHaveProperty("article_id");
+                        expect(comment).toHaveProperty(
+                            "author",
+                            expect.any(String)
+                        );
+                        expect(comment).toHaveProperty(
+                            "body",
+                            expect.any(String)
+                        );
+                        expect(comment).toHaveProperty(
+                            "article_id",
+                            expect.any(Number)
+                        );
                     });
                 });
         });
@@ -182,6 +206,106 @@ describe("API endpoints", () => {
                 .then((response) => {
                     expect(response.body.comments).toBeArray();
                     expect(response.body.comments).toHaveLength(0);
+                });
+        });
+    });
+    describe("POST: /api/articles/:article_id/comments", () => {
+        test("200 - inserts a new comment associated with a given article id into the database and sends the new comment back to the client", () => {
+            const newComment = {
+                username: "butter_bridge",
+                body: "Cats are dangerous.",
+            };
+            return request(app)
+                .post("/api/articles/5/comments")
+                .send(newComment)
+                .expect(201)
+                .then((response) => {
+                    expect(response.body.newComment).toMatchObject({
+                        author: "butter_bridge",
+                        body: "Cats are dangerous.",
+                        article_id: 5,
+                        votes: 0,
+                    });
+                    expect(response.body.newComment).toHaveProperty(
+                        "comment_id",
+                        expect.any(Number)
+                    );
+                    expect(response.body.newComment).toHaveProperty(
+                        "created_at",
+                        expect.any(String)
+                    );
+                });
+        });
+        test("200 - inserts the new comment and sends it back to the client along with an informative message when unnecessary properties are provided", () => {
+            const newComment = {
+                username: "icellusedkars",
+                body: "I like loud typing.",
+                favouriteColour: "green",
+            };
+            return request(app)
+                .post("/api/articles/4/comments")
+                .send(newComment)
+                .expect(201)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "NOTE: 1 or more unnecessary properties were passed in your request"
+                    );
+                    expect(response.body.newComment).toMatchObject({
+                        author: "icellusedkars",
+                        body: "I like loud typing.",
+                        article_id: 4,
+                        votes: 0,
+                    });
+                    expect(response.body.newComment).toHaveProperty(
+                        "comment_id",
+                        expect.any(Number)
+                    );
+                    expect(response.body.newComment).toHaveProperty(
+                        "created_at",
+                        expect.any(String)
+                    );
+                });
+        });
+        test("404 - sends an appropriate error message when the client tries to post a comment using an article id that does not exist", () => {
+            const newComment = {
+                username: "butter_bridge",
+                body: "I love this article.",
+            };
+            return request(app)
+                .post("/api/articles/235/comments")
+                .send(newComment)
+                .expect(404)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: article does not exist"
+                    );
+                });
+        });
+        test("400 - sends an appropriate error message when the client tries to post a comment with missing input field(s)", () => {
+            const newComment = {};
+            return request(app)
+                .post("/api/articles/2/comments")
+                .send(newComment)
+                .expect(400)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: bad request - missing input field(s)"
+                    );
+                });
+        });
+        test("404 - sends an appropriate error message when the client tries to post a comment with a username that doesn't exist in the database", () => {
+            const newComment = {
+                username: "testUser123",
+                body: "I love this article.",
+            };
+            return request(app)
+                .post("/api/articles/6/comments")
+                .send(newComment)
+                .expect(404)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: user does not exist"
+                    );
                 });
         });
     });
