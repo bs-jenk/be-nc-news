@@ -421,5 +421,17 @@ describe("API endpoints", () => {
                     );
                 });
         });
+        test("400 - sends an appropriate error message when the client tries to update an article with invalid data in the required field", () => {
+            const update = { inc_votes: "seven" };
+            return request(app)
+                .patch("/api/articles/4")
+                .send(update)
+                .expect(400)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: bad request - invalid input"
+                    );
+                });
+        });
     });
 });
