@@ -434,4 +434,9 @@ describe("API endpoints", () => {
                 });
         });
     });
+    describe("DELETE: /api/comments/:comment_id", () => {
+        test("204 - deletes a comment when provided with a comment id", () => {
+            return request(app).delete("/api/comments/7").expect(204);
+        });
+    });
 });
