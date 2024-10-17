@@ -8,7 +8,7 @@ exports.selectCommentsByArticleId = (article_id) => {
         });
 };
 
-exports.insertCommentsByArticleId = (article_id, comment) => {
+exports.insertCommentByArticleId = (article_id, comment) => {
     return db
         .query(
             `INSERT INTO comments
