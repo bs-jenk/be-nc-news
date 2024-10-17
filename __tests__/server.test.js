@@ -448,5 +448,15 @@ describe("API endpoints", () => {
                     );
                 });
         });
+        test("404 - sends an appropriate error message when the client tries to delete a comment using a comment id that does not exist", () => {
+            return request(app)
+                .delete("/api/comments/752")
+                .expect(404)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: comment does not exist"
+                    );
+                });
+        });
     });
 });
