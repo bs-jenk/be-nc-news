@@ -1,6 +1,7 @@
 const {
     selectCommentsByArticleId,
-    insertCommentsByArticleId,
+    insertCommentByArticleId,
+    removeCommentById,
 } = require("../models/comments.models");
 const { selectArticleById } = require("../models/articles.models");
 
@@ -20,10 +21,10 @@ exports.getCommentsByArticleId = (request, response, next) => {
         });
 };
 
-exports.postCommentsByArticleId = (request, response, next) => {
+exports.postCommentByArticleId = (request, response, next) => {
     const article_id = request.params.article_id;
     const comment = request.body;
-    insertCommentsByArticleId(article_id, comment)
+    insertCommentByArticleId(article_id, comment)
         .then((newComment) => {
             if (Object.keys(comment).length > 2) {
                 const msg =
@@ -32,6 +33,17 @@ exports.postCommentsByArticleId = (request, response, next) => {
             } else {
                 response.status(201).send({ newComment });
             }
+        })
+        .catch((err) => {
+            next(err);
+        });
+};
+
+exports.deleteCommentById = (request, response, next) => {
+    const comment_id = request.params.comment_id;
+    removeCommentById(comment_id)
+        .then(() => {
+            response.status(204).send();
         })
         .catch((err) => {
             next(err);
