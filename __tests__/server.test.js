@@ -149,7 +149,6 @@ describe("API endpoints", () => {
                 "title",
                 "topic",
                 "author",
-                "body",
                 "created_at",
                 "votes",
                 "article_img_url",
@@ -171,6 +170,25 @@ describe("API endpoints", () => {
                 .expect(200)
                 .then((response) => {
                     expect(response.body.articles).toBeSortedBy("created_at");
+                });
+        });
+        test("200 - sorts the data by article column and in ascending or descending order when provided with both queries", () => {
+            const columns = [
+                "article_id",
+                "title",
+                "topic",
+                "author",
+                "created_at",
+                "votes",
+                "article_img_url",
+                "comment_count",
+            ];
+            const order = ["asc", "desc"];
+            return request(app)
+                .get(`/api/articles?sort_by=${columns[7]}&order=${order[0]}`)
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.articles).toBeSortedBy(columns[7]);
                 });
         });
     });
