@@ -397,7 +397,7 @@ describe("API endpoints", () => {
                     );
                 });
         });
-        test("400 - sends an appropriate error message when the client tries to update an article using an article id that does not exist", () => {
+        test("404 - sends an appropriate error message when the client tries to update an article using an article id that does not exist", () => {
             const update = { inc_votes: 1 };
             return request(app)
                 .patch("/api/articles/657")
@@ -437,6 +437,16 @@ describe("API endpoints", () => {
     describe("DELETE: /api/comments/:comment_id", () => {
         test("204 - deletes a comment when provided with a comment id", () => {
             return request(app).delete("/api/comments/7").expect(204);
+        });
+        test("400 - sends an appropriate error message when the client tries to delete a comment using an invalid comment id", () => {
+            return request(app)
+                .delete("/api/comments/invalid-id")
+                .expect(400)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: bad request - invalid input"
+                    );
+                });
         });
     });
 });
