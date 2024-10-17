@@ -1,12 +1,12 @@
 const db = require("../db/connection");
 
-exports.selectArticles = (sort_by = "created_at") => {
+exports.selectArticles = (sort_by = "created_at", order = "desc") => {
     return db
         .query(
             `SELECT articles.article_id, title, articles.author, topic, articles.created_at, articles.votes, article_img_url, COUNT(comment_id)::int AS comment_count FROM articles
             LEFT JOIN comments ON comments.article_id = articles.article_id
             GROUP BY articles.article_id
-            ORDER BY articles.${sort_by} DESC;`
+            ORDER BY articles.${sort_by} ${order.toUpperCase()};`
         )
         .then((result) => {
             return result.rows;

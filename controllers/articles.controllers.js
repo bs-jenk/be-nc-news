@@ -6,7 +6,8 @@ const {
 
 exports.getArticles = (request, response, next) => {
     const sort_by = request.query.sort_by;
-    selectArticles(sort_by).then((articles) => {
+    const order = request.query.order;
+    selectArticles(sort_by, order).then((articles) => {
         response.status(200).send({ articles });
     });
 };

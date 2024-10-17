@@ -133,7 +133,7 @@ describe("API endpoints", () => {
                     });
                 });
         });
-        test.only("200 - sorts the data by date in descending order by default", () => {
+        test("200 - sorts the data by date in descending order by default", () => {
             return request(app)
                 .get("/api/articles")
                 .expect(200)
@@ -143,7 +143,7 @@ describe("API endpoints", () => {
                     });
                 });
         });
-        test.only("200 - sorts the data by any valid article column when provided with a query", () => {
+        test("200 - sorts the data by any valid article column when specified as a query", () => {
             const columns = [
                 "article_id",
                 "title",
@@ -162,6 +162,15 @@ describe("API endpoints", () => {
                     expect(response.body.articles).toBeSortedBy(columns[1], {
                         descending: true,
                     });
+                });
+        });
+        test("200 - sorts the data in either ascending or descending order when specified as a query", () => {
+            const order = ["asc", "desc"];
+            return request(app)
+                .get(`/api/articles?order=${order[0]}`)
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.articles).toBeSortedBy("created_at");
                 });
         });
     });
