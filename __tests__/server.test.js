@@ -133,12 +133,33 @@ describe("API endpoints", () => {
                     });
                 });
         });
-        test("200 - sorts the data by date in descending order", () => {
+        test.only("200 - sorts the data by date in descending order by default", () => {
             return request(app)
                 .get("/api/articles")
                 .expect(200)
                 .then((response) => {
                     expect(response.body.articles).toBeSortedBy("created_at", {
+                        descending: true,
+                    });
+                });
+        });
+        test.only("200 - sorts the data by any valid article column when provided with a query", () => {
+            const columns = [
+                "article_id",
+                "title",
+                "topic",
+                "author",
+                "body",
+                "created_at",
+                "votes",
+                "article_img_url",
+                "comment_count",
+            ];
+            return request(app)
+                .get(`/api/articles?sort_by=${columns[1]}`)
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.articles).toBeSortedBy(columns[1], {
                         descending: true,
                     });
                 });
