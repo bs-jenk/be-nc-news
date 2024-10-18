@@ -213,6 +213,18 @@ describe("API endpoints", () => {
                     );
                 });
         });
+        test("200 - filters the data by topic when topic is provided as a query", () => {
+            const topic = "cats";
+            return request(app)
+                .get(`/api/articles?topic=${topic}`)
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.articles).toHaveLength(1);
+                    response.body.articles.forEach((article) => {
+                        expect(article.topic).toBe(topic);
+                    });
+                });
+        });
     });
     describe("GET: /api/articles/:article_id/comments", () => {
         test("200 - sends an array of comments for the selected article to the client", () => {

@@ -7,12 +7,12 @@ const {
 exports.getArticles = (request, response, next) => {
     const sort_by = request.query.sort_by;
     const order = request.query.order;
-    selectArticles(sort_by, order)
+    const topic = request.query.topic;
+    selectArticles(sort_by, order, topic)
         .then((articles) => {
             response.status(200).send({ articles });
         })
         .catch((err) => {
-            console.log(err);
             next(err);
         });
 };
