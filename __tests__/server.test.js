@@ -213,6 +213,39 @@ describe("API endpoints", () => {
                     );
                 });
         });
+        test("200 - filters the data by topic when a valid topic is provided as a query", () => {
+            const topic = "cats";
+            return request(app)
+                .get(`/api/articles?topic=${topic}`)
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.articles).toHaveLength(1);
+                    response.body.articles.forEach((article) => {
+                        expect(article.topic).toBe(topic);
+                    });
+                });
+        });
+        test("200 - sends an empty array to the client when given a query with a valid topic with no associated articles", () => {
+            const topic = "paper";
+            return request(app)
+                .get(`/api/articles?topic=${topic}`)
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.articles).toBeArray();
+                    expect(response.body.articles).toHaveLength(0);
+                });
+        });
+        test("404 - sends an appropriate error message when the client tries to filter articles with a query using a topic that doesn't exist", () => {
+            const nonExistentTopic = "food";
+            return request(app)
+                .get(`/api/articles?topic=${nonExistentTopic}`)
+                .expect(404)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: topic does not exist"
+                    );
+                });
+        });
     });
     describe("GET: /api/articles/:article_id/comments", () => {
         test("200 - sends an array of comments for the selected article to the client", () => {

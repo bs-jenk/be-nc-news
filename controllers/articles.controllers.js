@@ -3,16 +3,25 @@ const {
     selectArticleById,
     updateArticleById,
 } = require("../models/articles.models");
+const { checkIfTopicExists } = require("../util-functions");
 
 exports.getArticles = (request, response, next) => {
     const sort_by = request.query.sort_by;
     const order = request.query.order;
-    selectArticles(sort_by, order)
-        .then((articles) => {
+    const topic = request.query.topic;
+
+    const promises = [selectArticles(sort_by, order, topic)];
+
+    if (topic) {
+        promises.push(checkIfTopicExists(topic));
+    }
+
+    Promise.all(promises)
+        .then((results) => {
+            const articles = results[0];
             response.status(200).send({ articles });
         })
         .catch((err) => {
-            console.log(err);
             next(err);
         });
 };

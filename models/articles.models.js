@@ -1,6 +1,6 @@
 const db = require("../db/connection");
 
-exports.selectArticles = (sort_by = "created_at", order = "desc") => {
+exports.selectArticles = (sort_by = "created_at", order = "desc", topic) => {
     const validSortByColumns = [
         "article_id",
         "title",
@@ -21,16 +21,21 @@ exports.selectArticles = (sort_by = "created_at", order = "desc") => {
             msg: "ERROR: bad request - invalid query",
         });
     }
-    return db
-        .query(
-            `SELECT articles.article_id, title, articles.author, topic, articles.created_at, articles.votes, article_img_url, COUNT(comment_id)::int AS comment_count FROM articles
-            LEFT JOIN comments ON comments.article_id = articles.article_id
-            GROUP BY articles.article_id
-            ORDER BY ${sort_by} ${order.toUpperCase()};`
-        )
-        .then((result) => {
-            return result.rows;
-        });
+
+    let dbQueryString = `SELECT articles.article_id, title, articles.author, topic, articles.created_at, articles.votes, article_img_url, COUNT(comment_id)::int AS comment_count FROM articles 
+    LEFT JOIN comments ON comments.article_id = articles.article_id`;
+    let dbQueryValues = [];
+
+    if (topic) {
+        dbQueryString += " WHERE topic = $1";
+        dbQueryValues.push(topic);
+    }
+
+    dbQueryString += ` GROUP BY articles.article_id ORDER BY ${sort_by} ${order.toUpperCase()};`;
+
+    return db.query(dbQueryString, dbQueryValues).then((result) => {
+        return result.rows;
+    });
 };
 
 exports.selectArticleById = (article_id) => {
