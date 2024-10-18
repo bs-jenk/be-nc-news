@@ -7,9 +7,14 @@ const {
 exports.getArticles = (request, response, next) => {
     const sort_by = request.query.sort_by;
     const order = request.query.order;
-    selectArticles(sort_by, order).then((articles) => {
-        response.status(200).send({ articles });
-    });
+    selectArticles(sort_by, order)
+        .then((articles) => {
+            response.status(200).send({ articles });
+        })
+        .catch((err) => {
+            console.log(err);
+            next(err);
+        });
 };
 
 exports.getArticleById = (request, response, next) => {

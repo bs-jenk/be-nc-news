@@ -191,6 +191,28 @@ describe("API endpoints", () => {
                     expect(response.body.articles).toBeSortedBy(columns[7]);
                 });
         });
+        test("200 - ignores the query when the client uses a query term that does not exist and sends the data in the default order", () => {
+            const nonExistentQueryTerm = "search";
+            return request(app)
+                .get(`/api/articles?${nonExistentQueryTerm}=votes`)
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.articles).toBeSortedBy("created_at", {
+                        descending: true,
+                    });
+                });
+        });
+        test("400 - sends an appropriate error message when the client uses an invalid query string", () => {
+            const invalidQueryString = "name";
+            return request(app)
+                .get(`/api/articles?sort_by=${invalidQueryString}`)
+                .expect(400)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: bad request - invalid query"
+                    );
+                });
+        });
     });
     describe("GET: /api/articles/:article_id/comments", () => {
         test("200 - sends an array of comments for the selected article to the client", () => {

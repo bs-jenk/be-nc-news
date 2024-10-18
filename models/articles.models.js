@@ -1,6 +1,26 @@
 const db = require("../db/connection");
 
 exports.selectArticles = (sort_by = "created_at", order = "desc") => {
+    const validSortByColumns = [
+        "article_id",
+        "title",
+        "topic",
+        "author",
+        "created_at",
+        "votes",
+        "article_img_url",
+        "comment_count",
+    ];
+    const validOrderOptions = ["asc", "desc"];
+    if (
+        !validSortByColumns.includes(sort_by) ||
+        !validOrderOptions.includes(order)
+    ) {
+        return Promise.reject({
+            status: 400,
+            msg: "ERROR: bad request - invalid query",
+        });
+    }
     return db
         .query(
             `SELECT articles.article_id, title, articles.author, topic, articles.created_at, articles.votes, article_img_url, COUNT(comment_id)::int AS comment_count FROM articles
