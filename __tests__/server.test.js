@@ -133,7 +133,7 @@ describe("API endpoints", () => {
                     });
                 });
         });
-        test("200 - sorts the data by date in descending order", () => {
+        test("200 - sorts the data by date in descending order by default", () => {
             return request(app)
                 .get("/api/articles")
                 .expect(200)
@@ -141,6 +141,76 @@ describe("API endpoints", () => {
                     expect(response.body.articles).toBeSortedBy("created_at", {
                         descending: true,
                     });
+                });
+        });
+        test("200 - sorts the data by any valid article column when specified as a query", () => {
+            const columns = [
+                "article_id",
+                "title",
+                "topic",
+                "author",
+                "created_at",
+                "votes",
+                "article_img_url",
+                "comment_count",
+            ];
+            return request(app)
+                .get(`/api/articles?sort_by=${columns[1]}`)
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.articles).toBeSortedBy(columns[1], {
+                        descending: true,
+                    });
+                });
+        });
+        test("200 - sorts the data in either ascending or descending order when specified as a query", () => {
+            const order = ["asc", "desc"];
+            return request(app)
+                .get(`/api/articles?order=${order[0]}`)
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.articles).toBeSortedBy("created_at");
+                });
+        });
+        test("200 - sorts the data by article column and in ascending or descending order when provided with both queries", () => {
+            const columns = [
+                "article_id",
+                "title",
+                "topic",
+                "author",
+                "created_at",
+                "votes",
+                "article_img_url",
+                "comment_count",
+            ];
+            const order = ["asc", "desc"];
+            return request(app)
+                .get(`/api/articles?sort_by=${columns[7]}&order=${order[0]}`)
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.articles).toBeSortedBy(columns[7]);
+                });
+        });
+        test("200 - ignores the query when the client uses a query term that does not exist and sends the data in the default order", () => {
+            const nonExistentQueryTerm = "search";
+            return request(app)
+                .get(`/api/articles?${nonExistentQueryTerm}=votes`)
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.articles).toBeSortedBy("created_at", {
+                        descending: true,
+                    });
+                });
+        });
+        test("400 - sends an appropriate error message when the client uses an invalid query string", () => {
+            const invalidQueryString = "name";
+            return request(app)
+                .get(`/api/articles?sort_by=${invalidQueryString}`)
+                .expect(400)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: bad request - invalid query"
+                    );
                 });
         });
     });
