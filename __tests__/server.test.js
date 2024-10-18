@@ -88,6 +88,17 @@ describe("API endpoints", () => {
                     );
                 });
         });
+        test("200 - sends a comment count as part of the article response object which is a total of all the comments associated with the selected article", () => {
+            return request(app)
+                .get("/api/articles/1")
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.article).toHaveProperty(
+                        "comment_count"
+                    );
+                    expect(response.body.article.comment_count).toBe(11);
+                });
+        });
     });
     describe("GET: /api/articles", () => {
         test("200 - sends an array of all the articles to the client", () => {
