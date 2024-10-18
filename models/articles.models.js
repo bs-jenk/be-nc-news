@@ -40,7 +40,13 @@ exports.selectArticles = (sort_by = "created_at", order = "desc", topic) => {
 
 exports.selectArticleById = (article_id) => {
     return db
-        .query("SELECT * FROM articles WHERE article_id = $1;", [article_id])
+        .query(
+            `SELECT articles.article_id, title, topic, articles.author, articles.body, articles.created_at, articles.votes, article_img_url, COUNT(comment_id)::int AS comment_count FROM articles
+            FULL JOIN comments ON comments.article_id = articles.article_id
+            WHERE articles.article_id = $1
+            GROUP BY articles.article_id;`,
+            [article_id]
+        )
         .then((result) => {
             if (!result.rowCount) {
                 return Promise.reject({
