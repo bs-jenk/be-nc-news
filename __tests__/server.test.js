@@ -225,7 +225,7 @@ describe("API endpoints", () => {
                     });
                 });
         });
-        test("200 - sends an empty array to the client when given a query with a valid topic with no articles", () => {
+        test("200 - sends an empty array to the client when given a query with a valid topic with no associated articles", () => {
             const topic = "paper";
             return request(app)
                 .get(`/api/articles?topic=${topic}`)
@@ -233,6 +233,17 @@ describe("API endpoints", () => {
                 .then((response) => {
                     expect(response.body.articles).toBeArray();
                     expect(response.body.articles).toHaveLength(0);
+                });
+        });
+        test("404 - sends an appropriate error message when the client tries to filter articles with a query using a topic that doesn't exist", () => {
+            const nonExistentTopic = "food";
+            return request(app)
+                .get(`/api/articles?topic=${nonExistentTopic}`)
+                .expect(404)
+                .then((response) => {
+                    expect(response.body.msg).toBe(
+                        "ERROR: topic does not exist"
+                    );
                 });
         });
     });
