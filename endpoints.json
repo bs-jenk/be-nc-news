@@ -1,155 +1,155 @@
 {
-    "GET /api": {
-        "description": "serves up a json representation of all the available endpoints of the api"
-    },
-    "GET /api/topics": {
-        "description": "serves an array of all topics",
-        "queries": [],
-        "exampleResponse": {
-            "topics": [{ "slug": "football", "description": "Footie!" }]
-        }
-    },
-    "GET /api/articles": {
-        "description": "serves an array of all articles",
-        "queries": [
-            "author",
-            "topic",
-            {
-                "sort_by": [
-                    "article_id",
-                    "title",
-                    "topic",
-                    "author",
-                    "created_at",
-                    "votes",
-                    "article_img_url",
-                    "comment_count"
-                ]
-            },
-            { "order": ["asc", "desc"] }
-        ],
-        "exampleResponse": {
-            "articles": [
-                {
-                    "article_id": 14,
-                    "title": "The Notorious MSG’s Unlikely Formula For Success",
-                    "topic": "cooking",
-                    "author": "grumpy19",
-                    "created_at": "2020-03-19 00:14:00",
-                    "votes": 0,
-                    "article_img_url": "https://images.pexels.com/photos/2403392/pexels-photo-2403392.jpeg?w=700&h=700",
-                    "comment_count": 2
-                },
-                {
-                    "article_id": 13,
-                    "title": "Seafood substitutions are increasing",
-                    "topic": "cooking",
-                    "author": "weegembump",
-                    "created_at": "2018-05-30T15:59:13.341Z",
-                    "votes": 0,
-                    "article_img_url": "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?w=700&h=700",
-                    "comment_count": 6
-                }
-            ]
-        }
-    },
-    "GET /api/articles/:article_id": {
-        "description": "serves a single article when provided with an id",
-        "exampleResponse": {
-            "article": {
-                "article_id": 1,
-                "title": "Running a Node App",
-                "topic": "coding",
-                "author": "jessjelly",
-                "body": "This is part two of a series on how to get up and running with Systemd and Node.js. This part dives deeper into how to successfully run your app with systemd long-term, and how to set it up in a production environment.",
-                "created_at": "2020-11-07 06:03:00",
-                "votes": 0,
-                "article_img_url": "https://images.pexels.com/photos/11035380/pexels-photo-11035380.jpeg?w=700&h=700",
-                "comment_count": 11
-            }
-        }
-    },
-    "GET /api/articles/:article_id/comments": {
-        "description": "serves an array of comments when provided with an article id",
-        "exampleResponse": {
-            "comments": [
-                {
-                    "comment_id": 1,
-                    "body": "Itaque quisquam est similique et est perspiciatis reprehenderit voluptatem autem. Voluptatem accusantium eius error adipisci quibusdam doloribus.",
-                    "votes": -1,
-                    "author": "tickle122",
-                    "article_id": 18,
-                    "created_at": "2020-06-20 08:24:00"
-                },
-                {
-                    "comment_id": 2,
-                    "body": "Nobis consequatur animi. Ullam nobis quaerat voluptates veniam.",
-                    "votes": 7,
-                    "author": "grumpy19",
-                    "article_id": 4,
-                    "created_at": "2020-09-20 00:10:00"
-                }
-            ]
-        }
-    },
-    "POST /api/articles/:article_id/comments": {
-        "description": "adds a comment to the database and serves the new comment when provided with an article id and a comment with a body and an exisiting username",
-        "requestBodyFormat": {
-            "username": "existing_user",
-            "body": "This is a new comment."
-        },
-        "exampleResponse": {
-            "newComment": {
-                "comment_id": 20,
-                "author": "existing_user",
-                "body": "This is a new comment.",
-                "article_id": 5,
-                "votes": 0,
-                "created_at": "2024-09-16 16:01:00"
-            }
-        }
-    },
-    "PATCH /api/articles/:article_id": {
-        "description": "updates the vote property on an article and serves the updated article when provided with an article id and a new vote amount",
-        "requestBodyFormat": {
-            "inc_votes": 1
-        },
-        "exampleResponse": {
-            "updatedArticle": {
-                "article_id": 1,
-                "title": "Running a Node App",
-                "topic": "coding",
-                "author": "jessjelly",
-                "body": "This is part two of a series on how to get up and running with Systemd and Node.js. This part dives deeper into how to successfully run your app with systemd long-term, and how to set it up in a production environment.",
-                "created_at": 1604728980000,
-                "votes": 1,
-                "article_img_url": "https://images.pexels.com/photos/11035380/pexels-photo-11035380.jpeg?w=700&h=700"
-            }
-        }
-    },
-    "DELETE /api/comments/:comment_id": {
-        "description": "deletes a comment when provided with a comment id (serves 204 code only, no response body)"
-    },
-    "GET /api/users": {
-        "description": "serves an array of all users",
-        "exampleResponse": {
-            "users": [
-                {
-                    "username": "butter_bridge",
-                    "name": "jonny",
-                    "avatar_url": "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg"
-                },
-                {
-                    "username": "icellusedkars",
-                    "name": "sam",
-                    "avatar_url": "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4"
-                },
-                {
-                    "username": "rogersop",
-                    "name": "paul",
-                    "avatar_url": "https://avatars2.githubusercontent.com/u/24394918?s=400&v=4"
-                }
-            ]
-        }
+  "GET /api": {
+    "description": "serves up a json representation of all the available endpoints of the api"
+  },
+  "GET /api/topics": {
+    "description": "serves an array of all topics",
+    "queries": [],
+    "exampleResponse": {
+      "topics": [{ "slug": "football", "description": "Footie!" }]
     }
+  },
+  "GET /api/articles": {
+    "description": "serves an array of all articles",
+    "queries": [
+      "author",
+      "topic",
+      {
+        "sort_by": [
+          "article_id",
+          "title",
+          "topic",
+          "author",
+          "created_at",
+          "votes",
+          "article_img_url",
+          "comment_count"
+        ]
+      },
+      { "order": ["asc", "desc"] }
+    ],
+    "exampleResponse": {
+      "articles": [
+        {
+          "article_id": 14,
+          "title": "The Notorious MSG’s Unlikely Formula For Success",
+          "topic": "cooking",
+          "author": "grumpy19",
+          "created_at": "2020-03-19 00:14:00",
+          "votes": 0,
+          "article_img_url": "https://images.pexels.com/photos/2403392/pexels-photo-2403392.jpeg?w=700&h=700",
+          "comment_count": 2
+        },
+        {
+          "article_id": 13,
+          "title": "Seafood substitutions are increasing",
+          "topic": "cooking",
+          "author": "weegembump",
+          "created_at": "2018-05-30T15:59:13.341Z",
+          "votes": 0,
+          "article_img_url": "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?w=700&h=700",
+          "comment_count": 6
+        }
+      ]
+    }
+  },
+  "GET /api/articles/:article_id": {
+    "description": "serves a single article when provided with an id",
+    "exampleResponse": {
+      "article": {
+        "article_id": 1,
+        "title": "Running a Node App",
+        "topic": "coding",
+        "author": "jessjelly",
+        "body": "This is part two of a series on how to get up and running with Systemd and Node.js. This part dives deeper into how to successfully run your app with systemd long-term, and how to set it up in a production environment.",
+        "created_at": "2020-11-07 06:03:00",
+        "votes": 0,
+        "article_img_url": "https://images.pexels.com/photos/11035380/pexels-photo-11035380.jpeg?w=700&h=700",
+        "comment_count": 11
+      }
+    }
+  },
+  "GET /api/articles/:article_id/comments": {
+    "description": "serves an array of comments when provided with an article id",
+    "exampleResponse": {
+      "comments": [
+        {
+          "comment_id": 1,
+          "body": "Itaque quisquam est similique et est perspiciatis reprehenderit voluptatem autem. Voluptatem accusantium eius error adipisci quibusdam doloribus.",
+          "votes": -1,
+          "author": "tickle122",
+          "article_id": 18,
+          "created_at": "2020-06-20 08:24:00"
+        },
+        {
+          "comment_id": 2,
+          "body": "Nobis consequatur animi. Ullam nobis quaerat voluptates veniam.",
+          "votes": 7,
+          "author": "grumpy19",
+          "article_id": 4,
+          "created_at": "2020-09-20 00:10:00"
+        }
+      ]
+    }
+  },
+  "POST /api/articles/:article_id/comments": {
+    "description": "adds a comment to the database and serves the new comment when provided with an article id and a comment with a body and an exisiting username",
+    "requestBodyFormat": {
+      "username": "existing_user",
+      "body": "This is a new comment."
+    },
+    "exampleResponse": {
+      "newComment": {
+        "comment_id": 20,
+        "author": "existing_user",
+        "body": "This is a new comment.",
+        "article_id": 5,
+        "votes": 0,
+        "created_at": "2024-09-16 16:01:00"
+      }
+    }
+  },
+  "PATCH /api/articles/:article_id": {
+    "description": "updates the vote property on an article and serves the updated article when provided with an article id and a new vote amount",
+    "requestBodyFormat": {
+      "inc_votes": 1
+    },
+    "exampleResponse": {
+      "updatedArticle": {
+        "article_id": 1,
+        "title": "Running a Node App",
+        "topic": "coding",
+        "author": "jessjelly",
+        "body": "This is part two of a series on how to get up and running with Systemd and Node.js. This part dives deeper into how to successfully run your app with systemd long-term, and how to set it up in a production environment.",
+        "created_at": "2020-11-18 18:33:00",
+        "votes": 1,
+        "article_img_url": "https://images.pexels.com/photos/11035380/pexels-photo-11035380.jpeg?w=700&h=700"
+      }
+    }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "deletes a comment when provided with a comment id (serves 204 code only, no response body)"
+  },
+  "GET /api/users": {
+    "description": "serves an array of all users",
+    "exampleResponse": {
+      "users": [
+        {
+          "username": "butter_bridge",
+          "name": "jonny",
+          "avatar_url": "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg"
+        },
+        {
+          "username": "icellusedkars",
+          "name": "sam",
+          "avatar_url": "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4"
+        },
+        {
+          "username": "rogersop",
+          "name": "paul",
+          "avatar_url": "https://avatars2.githubusercontent.com/u/24394918?s=400&v=4"
+        }
+      ]
+    }
+  }
 }
