@@ -293,6 +293,16 @@ describe("API endpoints", () => {
                     });
                 });
         });
+        test("200 - sorts the comments by date and time with the most recent first", () => {
+            return request(app)
+                .get("/api/articles/1/comments")
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.comments).toBeSortedBy("created_at", {
+                        descending: true
+                    });
+                });
+        });
         test("400 - sends an appropriate error message to the client when given an invalid article id", () => {
             return request(app)
                 .get("/api/articles/invalid-id/comments")
