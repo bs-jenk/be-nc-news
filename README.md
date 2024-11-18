@@ -26,7 +26,7 @@ cd <directory_name>
 2. Clone the repository
 
 ```js
-Git clone https://github.com/bs-jenk/be-nc-news.git
+git clone https://github.com/bs-jenk/be-nc-news.git
 ```
 
 3. Install the dependencies
