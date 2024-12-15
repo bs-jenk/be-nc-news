@@ -4,6 +4,8 @@ Welcome to the repo for my backend API project 'Northcoders News' which is now h
 
 Find the hosted API here: https://be-nc-news-c6su.onrender.com/api
 
+(Note: Please allow a minute or so for the data to be fetched when first using the API - after this initial waiting period it will function much more quickly.)
+
 This API has been built to serve a Reddit-style web app called NC News which allows users to find, read, vote, and comment on news articles sorted by various topics.
 
 ## Minimum requirements:
